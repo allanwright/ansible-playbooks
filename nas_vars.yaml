@@ -1,0 +1,74 @@
+ansible_settings:
+  ansible_user: ansible
+  package_state: present
+
+hardware:
+  disks:
+    data:
+      - disk_id: ata-Samsung_SSD_870_EVO_2TB_S750NX0X515000Y
+        mount_point: /mnt/disk1
+    parity:
+      - disk_id: ata-Samsung_SSD_870_EVO_2TB_S753NS0X522565X
+        mount_point: /mnt/parity1
+
+shares:
+  - name: documents
+    mode: '0770'
+  - name: movies
+    mode: '0775'
+  - name: photos
+    mode: '0770'
+  - name: software
+    mode: '0770'
+  - name: tv
+    mode: '0775'
+
+iam:
+  groups:
+    - id: 1337
+      name: arrstack
+  users:
+    - name: allan
+      groups: 'movies,software,tv'
+    - name: shoshana
+      groups: 'movies,tv'
+    - id: 1337
+      name: arrstack
+      groups: 'docker,movies,tv'
+  acls:
+    - path: /opt/docker/qbittorrent
+      entity: '1337:arrstack'
+      type: group
+      permissions: rwx
+    - path: /opt/docker/prowlarr
+      entity: '1337:arrstack'
+      type: group
+      permissions: rwx
+    - path: /opt/docker/radarr
+      entity: '1337:arrstack'
+      type: group
+      permissions: rwx
+    - path: /opt/docker/sonarr
+      entity: '1337:arrstack'
+      type: group
+      permissions: rwx
+    - path: /opt/docker/jellyfin
+      entity: '1337:arrstack'
+      type: group
+      permissions: rwx
+    - path: /opt/docker/jellyseerr
+      entity: '1337:arrstack'
+      type: group
+      permissions: rwx
+
+software:
+  packages:
+    - glances
+    - powertop
+  containers:
+    - name: homepage
+    - name: certbot
+    - name: nginx
+    - name: arrstack
+      owner: '1337'
+      group: '1337'
